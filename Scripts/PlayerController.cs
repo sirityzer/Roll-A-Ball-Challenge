@@ -22,11 +22,13 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        score = 0;
         SetCountText();
         SetScoreText();
         red = 0;
         yellow = 0;
         winText.text = "";
+        DontDestroyOnLoad(gameObject);
     }
 
     void FixedUpdate()
@@ -37,20 +39,21 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
-        if (yellow >= 12)
-        {
-            SceneManager.LoadScene("Level 2");
-        }
+       
     }
     void OnTriggerEnter(Collider other)
     {
        if(other.gameObject.CompareTag("Pick Up"))
-        {
+        { 
             other.gameObject.SetActive(false);
             count = count + 1;
             score = score + 1;
             yellow = yellow + 1;
-     
+            if (yellow == 12)
+            {
+                SceneManager.LoadScene("Level 2");
+            }
+
         }
         if (other.gameObject.CompareTag("Enemy"))
         {
@@ -72,7 +75,7 @@ public class PlayerController : MonoBehaviour
     void SetScoreText()
     {
         scoreText.text = "Cube Power: " + score.ToString();
-        if (yellow >= 12)
+        if (score >= 24)
         {
             winText.text = "Maximum Cube Power Acheived!";
         }
