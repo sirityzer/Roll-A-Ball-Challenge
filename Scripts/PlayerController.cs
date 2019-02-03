@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
     public Text countText;
     public Text winText;
     public Text scoreText;
+    public Text lifeText;
+    public Text loseText;
 
     private Rigidbody rb;
     private int count;
     private int yellow;
     private int red;
     private int score;
+    private int lives;
 
     void Start()
     {
@@ -28,7 +31,10 @@ public class PlayerController : MonoBehaviour
         red = 0;
         yellow = 0;
         winText.text = "";
+        loseText.text = "";
         DontDestroyOnLoad(gameObject);
+        lives = 3;
+        SetLifeText();
     }
 
     void FixedUpdate()
@@ -61,13 +67,24 @@ public class PlayerController : MonoBehaviour
             score = score - 1;
             count = count + 1;
             red = red + 1;
+            lives = lives - 1;
           
         }
         
         SetCountText();
         SetScoreText();
+        SetLifeText();
     }
 
+    void SetLifeText()
+    {
+        lifeText.text = "Lives: " + lives.ToString();
+        if (lives <= 0)
+        {
+            loseText.text = "Killed By Cubes :(";
+            Destroy(gameObject);
+        }
+    }
     void SetCountText()
     {
         countText.text = "Total Cubes: " + count.ToString();
